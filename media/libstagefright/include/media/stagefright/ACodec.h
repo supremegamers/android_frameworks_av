@@ -35,6 +35,8 @@
 #include <android/hidl/allocator/1.0/IAllocator.h>
 #include <android/hidl/memory/1.0/IMemory.h>
 
+#include <system/audio.h>
+
 #define TRACK_BUFFER_TIMING     0
 
 namespace android {
@@ -115,6 +117,8 @@ protected:
                 ALOGD("virtual setOmxReadMultiFrame");
                 return BAD_VALUE;
     };
+    virtual status_t setupCustomCodec(
+            status_t err, const char *mime, const sp<AMessage> &msg);
 
     virtual status_t setMtkParameters(const sp<IOMXNode> & /*omxNode*/,
             const sp<AMessage> & /*params*/, bool /*isEncoder*/) {
@@ -514,9 +518,11 @@ protected:
             int32_t maxOutputChannelCount, const drcParams_t& drc,
             int32_t pcmLimiterEnable);
 
-    status_t setupAC3Codec(bool encoder, int32_t numChannels, int32_t sampleRate);
+    status_t setupAC3Codec(bool encoder, int32_t numChannels, int32_t sampleRate,
+            AudioEncoding encoding = kAudioEncodingPcm16bit);
 
-    status_t setupEAC3Codec(bool encoder, int32_t numChannels, int32_t sampleRate);
+    status_t setupEAC3Codec(bool encoder, int32_t numChannels, int32_t sampleRate,
+            AudioEncoding encoding = kAudioEncodingPcm16bit);
 
     status_t setupAC4Codec(bool encoder, int32_t numChannels, int32_t sampleRate);
 
