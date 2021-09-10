@@ -242,7 +242,6 @@ public:
                                        const std::string opPackageName);
 
     virtual sp<IMediaCodecList> getCodecList() const;
-    virtual sp<IHDCP>           makeHDCP(bool createEncryptionModule);
 
     virtual sp<IRemoteDisplay> listenForRemoteDisplay(const String16 &opPackageName,
             const sp<IRemoteDisplayClient>& client, const String8& iface);

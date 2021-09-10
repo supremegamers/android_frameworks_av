@@ -82,8 +82,6 @@
 #include "TestPlayerStub.h"
 #include "nuplayer/NuPlayerDriver.h"
 
-#include "HDCP.h"
-#include "RemoteDisplay.h"
 
 static const int kDumpLockRetries = 50;
 static const int kDumpLockSleepUs = 20000;
@@ -506,18 +504,13 @@ sp<IMediaCodecList> MediaPlayerService::getCodecList() const {
     return MediaCodecList::getLocalInstance();
 }
 
-sp<IHDCP> MediaPlayerService::makeHDCP(bool createEncryptionModule) {
-    return new HDCP(createEncryptionModule);
-}
-
 sp<IRemoteDisplay> MediaPlayerService::listenForRemoteDisplay(
-        const String16 &opPackageName,
-        const sp<IRemoteDisplayClient>& client, const String8& iface) {
-    if (!checkPermission("android.permission.CONTROL_WIFI_DISPLAY")) {
-        return NULL;
-    }
+        const String16 &/*opPackageName*/,
+        const sp<IRemoteDisplayClient>& /*client*/,
+        const String8& /*iface*/) {
+    ALOGE("listenForRemoteDisplay is no longer supported!");
 
-    return new RemoteDisplay(opPackageName, client, iface.string());
+    return NULL;
 }
 
 status_t MediaPlayerService::AudioOutput::dump(int fd, const Vector<String16>& args) const
