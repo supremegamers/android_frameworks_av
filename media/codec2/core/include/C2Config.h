@@ -270,6 +270,8 @@ enum C2ParamIndexKind : C2Param::type_index_t {
 
     // encoding quality requirements
     kParamIndexEncodingQualityLevel, // encoders, enum
+    // FFMPEG
+    kParamIndexRawCodecData,
 };
 
 }
@@ -2410,6 +2412,10 @@ C2ENUM(C2PlatformConfig::encoding_quality_level_t, uint32_t,
     NONE = 0,
     S_HANDHELD = 1              // corresponds to VMAF=70
 );
+// FFMPEG
+
+typedef C2StreamParam<C2Info, C2BlobValue, kParamIndexRawCodecData> C2StreamRawCodecDataInfo;
+constexpr char C2_PARAMKEY_RAW_CODEC_DATA[] = "coded.raw-codec-data";
 
 /// @}
 
