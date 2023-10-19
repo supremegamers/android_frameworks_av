@@ -331,7 +331,7 @@ status_t Camera3OutputStream::fixUpHidlJpegBlobHeader(ANativeWindowBuffer* anwBu
     status_t res =
             gbLocker.lockAsync(
                     GraphicBuffer::USAGE_SW_READ_OFTEN | GraphicBuffer::USAGE_SW_WRITE_RARELY,
-                    &mapped, fenceFd.get());
+                    &mapped, fenceFd.release());
     if (res != OK) {
         ALOGE("%s: Failed to lock the buffer: %s (%d)", __FUNCTION__, strerror(-res), res);
         return res;
@@ -1327,7 +1327,7 @@ void Camera3OutputStream::dumpImageToDisk(nsecs_t timestamp,
     void* mapped = nullptr;
     base::unique_fd fenceFd(dup(fence));
     status_t res = graphicBuffer->lockAsync(GraphicBuffer::USAGE_SW_READ_OFTEN, &mapped,
-            fenceFd.get());
+            fenceFd.release());
     if (res != OK) {
         ALOGE("%s: Failed to lock the buffer: %s (%d)", __FUNCTION__, strerror(-res), res);
         return;
@@ -1390,6 +1390,11 @@ void Camera3OutputStream::onMinDurationChanged(nsecs_t duration, bool fixedFps) 
     Mutex::Autolock l(mLock);
     mMinExpectedDuration = duration;
     mFixedFps = fixedFps;
+}
+
+void Camera3OutputStream::setStreamUseCase(int64_t streamUseCase) {
+    Mutex::Autolock l(mLock);
+    camera_stream::use_case = streamUseCase;
 }
 
 void Camera3OutputStream::returnPrefetchedBuffersLocked() {
